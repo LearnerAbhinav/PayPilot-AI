@@ -5,19 +5,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getActiveCurrency(): string {
+  return localStorage.getItem('paypilot_currency') || 'INR';
+}
+
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-IN', {
+  const currency = getActiveCurrency();
+  const locale = currency === 'INR' ? 'en-IN' : currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'de-DE' : 'en-GB';
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'INR',
+    currency: currency,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
 }
 
 export function formatCurrencyFull(amount: number): string {
-  return new Intl.NumberFormat('en-IN', {
+  const currency = getActiveCurrency();
+  const locale = currency === 'INR' ? 'en-IN' : currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'de-DE' : 'en-GB';
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'INR',
+    currency: currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);

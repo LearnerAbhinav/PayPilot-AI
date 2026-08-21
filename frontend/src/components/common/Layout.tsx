@@ -226,14 +226,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       setUserName(localStorage.getItem('paypilot_user_name') || 'User');
       setUserEmail(localStorage.getItem('paypilot_user_email') || 'user@paypilot.ai');
     };
+
+    // Listen for dispatched test/real notifications
+    const handleNewNotification = (e: any) => {
+      if (e.detail) {
+        setNotifications((prev) => [e.detail, ...prev]);
+      }
+    };
     
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('user-updated', handleUserUpdate);
+    window.addEventListener('new-notification', handleNewNotification);
     
     return () => {
       clearInterval(t);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('user-updated', handleUserUpdate);
+      window.removeEventListener('new-notification', handleNewNotification);
     };
   }, []);
 
