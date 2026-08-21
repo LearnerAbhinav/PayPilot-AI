@@ -1,4 +1,11 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "/api";
+function getBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return "/api";
+  const trimmed = envUrl.trim().replace(/\/+$/, "");
+  return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
+}
+
+const BASE_URL = getBaseUrl();
 
 function getToken(): string | null {
   return localStorage.getItem("paypilot_token");
@@ -16,7 +23,8 @@ async function request<T>(
 ): Promise<T> {
   const { params, ...fetchOptions } = options;
 
-  let urlStr = `${BASE_URL}${path}`;
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  let urlStr = `${BASE_URL}${cleanPath}`;
   if (params) {
     const sp = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
