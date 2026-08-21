@@ -123,18 +123,18 @@ export default function AnomaliesPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up delay-100">
-        <Card className="lg:col-span-2 relative overflow-hidden">
+        <Card className="lg:col-span-2 relative overflow-hidden shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xs font-semibold text-white">Statistical Deviation Timeline</h3>
-              <p className="text-[11px] text-slate-400">Z-Score metric deviations over last 24 hours</p>
+              <h3 className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Statistical Deviation Timeline</h3>
+              <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Z-Score metric deviations over last 24 hours</p>
             </div>
             <div className="flex items-center gap-3 text-xs">
-              <div className="flex items-center gap-1.5 text-slate-400">
-                <span className="w-2 h-2 rounded-full bg-slate-500" /> Normal (|z| &lt; 2)
+              <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
+                <span className="w-2 h-2 rounded-full bg-slate-400" /> Normal (|z| &lt; 2)
               </div>
-              <div className="flex items-center gap-1.5 text-amber-300 font-medium">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" /> Spike Detected
+              <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-300 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" /> Spike Detected
               </div>
             </div>
           </div>
@@ -148,10 +148,10 @@ export default function AnomaliesPage() {
                     <stop offset="95%" stopColor="#7c3aed" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="time" stroke="rgba(255,255,255,0.2)" fontSize={11} tickMargin={8} />
+                <XAxis dataKey="time" stroke="rgba(150,150,150,0.3)" fontSize={11} tickMargin={8} />
                 <Tooltip 
                   formatter={(val: any) => [`z-score: ${val}`, 'Deviation']}
-                  contentStyle={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-default)', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-default)', borderRadius: '8px', color: 'var(--text-primary)' }}
                 />
                 <Area type="monotone" dataKey="zscore" stroke="#ef4444" strokeWidth={2.5} fill="url(#colorZ)" />
               </AreaChart>
@@ -159,24 +159,24 @@ export default function AnomaliesPage() {
           </div>
         </Card>
 
-        <Card title="Anomaly Summary" className="flex flex-col justify-between">
+        <Card title="Anomaly Summary" className="flex flex-col justify-between shadow-sm">
           <div className="space-y-3 pt-2">
             <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex justify-between items-center">
               <div>
-                <span className="text-[11px] text-red-300 font-semibold block">Critical Severity</span>
-                <span className="text-xs text-slate-400">Immediate action advised</span>
+                <span className="text-[11px] text-red-700 dark:text-red-300 font-bold block">Critical Severity</span>
+                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Immediate action advised</span>
               </div>
-              <span className="text-xl font-bold text-red-400">
+              <span className="text-xl font-bold text-red-600 dark:text-red-400">
                 {anomalies.filter(a => a.severity === 'critical' && !resolvedIds.has(a.id)).length}
               </span>
             </div>
 
             <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 flex justify-between items-center">
               <div>
-                <span className="text-[11px] text-amber-300 font-semibold block">High / Warning Severity</span>
-                <span className="text-xs text-slate-400">Trending above baseline</span>
+                <span className="text-[11px] text-amber-700 dark:text-amber-300 font-bold block">High / Warning Severity</span>
+                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Trending above baseline</span>
               </div>
-              <span className="text-xl font-bold text-amber-400">
+              <span className="text-xl font-bold text-amber-600 dark:text-amber-400">
                 {anomalies.filter(a => (a.severity === 'high' || a.severity === 'warning') && !resolvedIds.has(a.id)).length}
               </span>
             </div>
@@ -184,34 +184,38 @@ export default function AnomaliesPage() {
 
           <button
             onClick={() => navigate('/copilot?msg=Provide an executive summary and mitigation strategy for all active anomalies')}
-            className="mt-4 w-full py-2 bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+            className="mt-4 w-full py-2 bg-violet-500/10 hover:bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/20 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
           >
-            <Bot className="w-3.5 h-3.5" /> Launch Autonomous Root-Cause Analysis
+            <Bot className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" /> Launch Autonomous Root-Cause Analysis
           </button>
         </Card>
       </div>
 
-      <Card noPadding>
-        <div className="p-4 border-b border-white/10 flex flex-wrap gap-4 items-center justify-between bg-white/5">
+      <Card noPadding className="shadow-sm">
+        <div 
+          className="p-4 border-b flex flex-wrap gap-4 items-center justify-between"
+          style={{ borderColor: 'var(--border-default)', background: 'var(--bg-elevated)' }}
+        >
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-slate-400" />
-            <span className="text-xs font-semibold text-slate-300">Filter Severity:</span>
+            <Filter className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
+            <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>Filter Severity:</span>
             {(['all', 'critical', 'high', 'medium'] as const).map(sev => (
               <button
                 key={sev}
                 onClick={() => setFilter(sev)}
                 className={cn(
-                  "px-2.5 py-1 rounded text-xs font-medium capitalize transition-colors",
-                  filter === sev ? "bg-violet-600 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  "px-2.5 py-1 rounded text-xs font-semibold capitalize transition-all",
+                  filter === sev ? "bg-violet-600 text-white shadow-sm" : "hover:text-violet-600 dark:hover:text-white"
                 )}
+                style={{ color: filter === sev ? '#ffffff' : 'var(--text-muted)' }}
               >
                 {sev}
               </button>
             ))}
           </div>
 
-          <span className="text-xs text-slate-400">
-            Showing <strong className="text-white">{filteredAnomalies.length}</strong> active signals
+          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            Showing <strong style={{ color: 'var(--text-primary)' }}>{filteredAnomalies.length}</strong> active signals
           </span>
         </div>
 
@@ -219,9 +223,9 @@ export default function AnomaliesPage() {
           <TableSkeleton rows={6} />
         ) : filteredAnomalies.length === 0 ? (
           <div className="p-12 text-center">
-            <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-            <p className="text-sm text-slate-200 font-medium">All financial metrics within healthy thresholds</p>
-            <p className="text-xs text-slate-500 mt-0.5">No anomalies found for selected filters.</p>
+            <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
+            <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>All financial metrics within healthy thresholds</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>No anomalies found for selected filters.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -242,15 +246,15 @@ export default function AnomaliesPage() {
                   const baselineVal = a.baseline_value ?? a.baseline ?? 0;
                   
                   return (
-                    <tr key={aid} className="hover:bg-white/[0.03] transition-colors">
+                    <tr key={aid} className="transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.03]">
                       <td>
                         <div className="flex items-center gap-2">
                           {getMetricIcon(a.metric)}
                           <div>
-                            <span className="font-semibold text-white capitalize block">{a.type.replace(/_/g, ' ')}</span>
+                            <span className="font-semibold capitalize block" style={{ color: 'var(--text-primary)' }}>{a.type.replace(/_/g, ' ')}</span>
                             <span className={cn(
-                              "text-[10px] font-bold uppercase px-1.5 py-0.2 rounded inline-block mt-0.5",
-                              a.severity === 'critical' ? "bg-red-500/20 text-red-400" : "bg-amber-500/20 text-amber-300"
+                              "text-[10px] font-bold uppercase px-1.5 py-0.2 rounded inline-block mt-0.5 border",
+                              a.severity === 'critical' ? "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20" : "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20"
                             )}>
                               {a.severity}
                             </span>
@@ -258,19 +262,19 @@ export default function AnomaliesPage() {
                         </div>
                       </td>
                       <td className="max-w-[280px]">
-                        <p className="text-slate-300 font-medium">{a.metric.replace(/_/g, ' ')}</p>
-                        <p className="text-slate-400 text-[11px] mt-0.5 leading-snug">{a.explanation}</p>
+                        <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>{a.metric.replace(/_/g, ' ')}</p>
+                        <p className="text-[11px] mt-0.5 leading-snug" style={{ color: 'var(--text-muted)' }}>{a.explanation}</p>
                       </td>
-                      <td className="font-semibold text-white">
+                      <td className="font-bold" style={{ color: 'var(--text-primary)' }}>
                         {formatValue(a.metric, a.current_value)}
                       </td>
-                      <td className="text-slate-400">
+                      <td style={{ color: 'var(--text-muted)' }}>
                         {formatValue(a.metric, baselineVal)}
                       </td>
                       <td>
                         <span className={cn(
                           "font-bold text-xs",
-                          a.percentage_change > 0 ? "text-red-400" : "text-amber-400"
+                          a.percentage_change > 0 ? "text-red-600 dark:text-red-400" : "text-amber-600 dark:text-amber-400"
                         )}>
                           {a.percentage_change > 0 ? `+${a.percentage_change.toFixed(1)}%` : `${a.percentage_change.toFixed(1)}%`}
                         </span>
@@ -280,7 +284,7 @@ export default function AnomaliesPage() {
                           <button
                             onClick={(e) => handleInvestigate(a, e)}
                             disabled={investigatingId === aid}
-                            className="px-2.5 py-1 bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 rounded text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                            className="px-2.5 py-1 bg-violet-500/10 hover:bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/20 rounded text-[11px] font-semibold flex items-center gap-1 transition-colors"
                           >
                             {investigatingId === aid ? (
                               <Loader2 className="w-3 h-3 animate-spin" />
@@ -291,7 +295,8 @@ export default function AnomaliesPage() {
                           </button>
                           <button
                             onClick={(e) => handleResolve(aid, e)}
-                            className="px-2 py-1 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white rounded text-[11px] transition-colors"
+                            className="px-2 py-1 rounded text-[11px] transition-colors border hover:opacity-80"
+                            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)', color: 'var(--text-muted)' }}
                             title="Mark as resolved"
                           >
                             Dismiss

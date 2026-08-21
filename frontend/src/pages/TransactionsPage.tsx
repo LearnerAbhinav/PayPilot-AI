@@ -94,18 +94,22 @@ export default function TransactionsPage() {
           
           <button 
             onClick={exportCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all border shadow-sm hover:opacity-80"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
           >
             <Download className="w-4 h-4" /> Export
           </button>
         </div>
       </div>
 
-      <Card noPadding className="animate-fade-in-up delay-50">
-        <div className="p-4 border-b border-white/10 flex flex-wrap gap-4 items-center bg-white/5">
+      <Card noPadding className="animate-fade-in-up delay-50 shadow-sm">
+        <div 
+          className="p-4 border-b flex flex-wrap gap-4 items-center"
+          style={{ borderColor: 'var(--border-default)', background: 'var(--bg-elevated)' }}
+        >
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-slate-400" />
-            <span className="text-sm font-medium text-slate-300">Filters:</span>
+            <Filter className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
+            <span className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>Filters:</span>
           </div>
           
           <select

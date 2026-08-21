@@ -128,30 +128,40 @@ export default function AnalyticsPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
-            <span className="text-xs text-slate-400">Compare</span>
+          <div 
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)' }}
+          >
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Compare</span>
             <div 
-              className={cn("w-8 h-4 rounded-full relative cursor-pointer transition-colors", compareMode ? "bg-violet-500" : "bg-white/20")}
+              className={cn("w-8 h-4 rounded-full relative cursor-pointer transition-colors", compareMode ? "bg-violet-600" : "bg-slate-300 dark:bg-white/20")}
               onClick={() => setCompareMode(!compareMode)}
             >
-              <div className={cn("absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform", compareMode ? "left-4.5" : "left-0.5")} />
+              <div className={cn("absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform shadow-sm", compareMode ? "left-4.5" : "left-0.5")} />
             </div>
           </div>
           
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
-            <Calendar className="w-4 h-4 text-slate-400" />
+          <div 
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)' }}
+          >
+            <Calendar className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <select
-              className="bg-transparent text-sm font-medium text-white outline-none cursor-pointer"
+              className="bg-transparent text-sm font-medium outline-none cursor-pointer"
+              style={{ color: 'var(--text-primary)' }}
               value={period}
               onChange={(e) => setPeriod(Number(e.target.value))}
             >
-              <option value={7} className="bg-slate-900">Last 7 days</option>
-              <option value={30} className="bg-slate-900">Last 30 days</option>
-              <option value={90} className="bg-slate-900">Last 90 days</option>
+              <option value={7} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>Last 7 days</option>
+              <option value={30} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>Last 30 days</option>
+              <option value={90} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>Last 90 days</option>
             </select>
           </div>
           
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-sm font-medium transition-colors">
+          <button 
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all border shadow-sm hover:opacity-80"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
+          >
             <Download className="w-4 h-4" /> <span className="hidden sm:inline">Export PDF</span>
           </button>
         </div>
@@ -245,19 +255,22 @@ export default function AnalyticsPage() {
               return (
                 <div key={stage.stage} className="relative mb-6 last:mb-0">
                   <div className="flex justify-between items-end mb-1">
-                    <span className="text-sm font-medium text-slate-200">{stage.stage}</span>
-                    <span className="text-sm font-bold text-white">{stage.count.toLocaleString()}</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{stage.stage}</span>
+                    <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{stage.count.toLocaleString()}</span>
                   </div>
-                  <div className="h-6 bg-white/5 rounded-r-full overflow-hidden w-full relative">
+                  <div 
+                    className="h-6 rounded-r-full overflow-hidden w-full relative"
+                    style={{ background: 'var(--bg-elevated)' }}
+                  >
                     <div 
-                      className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-violet-600 to-indigo-500 rounded-r-full transition-all duration-1000"
+                      className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-500 rounded-r-full transition-all duration-1000 shadow-sm"
                       style={{ width }}
                     >
-                      <div className="absolute inset-0 bg-white/10 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+                      <div className="absolute inset-0 bg-white/15 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
                     </div>
                   </div>
                   {stage.dropoff > 0 && (
-                    <div className="absolute -bottom-5 right-0 text-[10px] text-red-400 font-medium">
+                    <div className="absolute -bottom-5 right-0 text-[10px] text-red-600 dark:text-red-400 font-semibold">
                       -{stage.dropoff}% drop
                     </div>
                   )}

@@ -143,10 +143,10 @@ function SidebarContent({ onNavClick, userName, userEmail, collapsed, onToggleCo
       <div className={cn("p-3 transition-all", collapsed ? "px-1" : "")} style={{ borderTop: '1px solid var(--border-subtle)' }}>
         <div
           className={cn("flex items-center gap-3 py-2.5 rounded-lg transition-colors cursor-default", collapsed ? "justify-center px-0" : "px-3")}
-          style={{ background: 'rgba(255,255,255,0.03)' }}
+          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)' }}
         >
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
+            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold shadow-sm"
             style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
             title={collapsed ? userName : undefined}
           >
@@ -317,7 +317,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <header
           className="sticky top-0 z-40 flex items-center justify-between px-5 h-14"
           style={{
-            background: 'rgba(7, 7, 13, 0.85)',
+            background: 'var(--bg-surface)',
             backdropFilter: 'blur(20px)',
             borderBottom: '1px solid var(--border-subtle)',
           }}
@@ -342,12 +342,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Command Palette trigger */}
             <button
               onClick={() => setShowCommandPalette(true)}
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors hover:bg-white/5"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-subtle)' }}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors hover:opacity-90"
+              style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)' }}
             >
-              <Search className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-xs text-slate-400">Search</span>
-              <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono">Ctrl+K</kbd>
+              <Search className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Search</span>
+              <kbd className="text-[10px] px-1.5 py-0.5 rounded font-mono" style={{ background: 'var(--border-subtle)', color: 'var(--text-muted)', border: '1px solid var(--border-default)' }}>Ctrl+K</kbd>
             </button>
 
             {/* Live clock */}
@@ -376,7 +376,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* User + logout */}
             <div className="flex items-center gap-2 ml-1" style={{ borderLeft: '1px solid var(--border-subtle)', paddingLeft: '12px' }}>
               <div
-                className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm"
                 style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
                 title={userName}
               >
@@ -384,7 +384,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-white/5 text-slate-400 hover:text-slate-200"
+                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-white/5"
+                style={{ color: 'var(--text-muted)' }}
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Logout</span>

@@ -137,22 +137,24 @@ export default function AuditPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-1 space-y-4 animate-fade-in-up delay-50">
-          <Card title="Compliance & Integrity" className="text-center bg-gradient-to-b from-white/[0.05] to-transparent">
-            <ShieldCheck className="w-12 h-12 text-emerald-400 mx-auto mb-3 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" />
-            <h3 className="text-3xl font-bold text-white mb-1">{verifiedRate}%</h3>
-            <p className="text-xs text-emerald-400 font-medium">Immutable Chain of Custody</p>
-            <div className="mt-4 pt-4 border-t border-white/10 text-left space-y-2 text-xs text-slate-300">
+          <Card className="text-center relative overflow-hidden shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)' }}>
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3 border border-emerald-500/20 shadow-sm">
+              <ShieldCheck className="w-8 h-8 text-emerald-500" />
+            </div>
+            <h3 className="text-3xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{verifiedRate}%</h3>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Immutable Chain of Custody</p>
+            <div className="mt-4 pt-4 border-t text-left space-y-2.5 text-xs" style={{ borderColor: 'var(--border-subtle)' }}>
               <div className="flex justify-between">
-                <span className="text-slate-400">Total Audit Events</span>
-                <span className="font-semibold text-white">{totalEvents}</span>
+                <span style={{ color: 'var(--text-muted)' }}>Total Audit Events</span>
+                <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{totalEvents}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Human Approvals</span>
-                <span className="font-semibold text-emerald-400">Active</span>
+                <span style={{ color: 'var(--text-muted)' }}>Human Approvals</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">Active</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Tenant Isolation</span>
-                <span className="font-semibold text-emerald-400">Enforced</span>
+                <span style={{ color: 'var(--text-muted)' }}>Tenant Isolation</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">Enforced</span>
               </div>
             </div>
           </Card>
@@ -163,7 +165,13 @@ export default function AuditPage() {
                 <button 
                   key={f}
                   onClick={() => setFilterType(f)}
-                  className={cn("w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors", filterType === f ? "bg-violet-600 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white")}
+                  className={cn(
+                    "w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-all",
+                    filterType === f 
+                      ? "bg-violet-600 text-white shadow-md shadow-violet-600/20" 
+                      : "hover:bg-slate-100 dark:hover:bg-white/5"
+                  )}
+                  style={{ color: filterType === f ? '#ffffff' : 'var(--text-secondary)' }}
                 >
                   {f}
                 </button>
@@ -173,16 +181,20 @@ export default function AuditPage() {
         </div>
 
         <div className="lg:col-span-3">
-          <Card noPadding className="animate-fade-in-up delay-100 min-h-[500px] flex flex-col">
-            <div className="p-4 border-b border-white/10 flex flex-wrap gap-4 items-center bg-white/5">
+          <Card noPadding className="animate-fade-in-up delay-100 min-h-[500px] flex flex-col shadow-sm">
+            <div 
+              className="p-4 border-b flex flex-wrap gap-4 items-center"
+              style={{ borderColor: 'var(--border-default)', background: 'var(--bg-elevated)' }}
+            >
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-slate-400" />
+                <Filter className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                 <input 
                   type="text"
                   placeholder="Filter logs by action, resource ID, or type..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-transparent border-none text-xs text-white placeholder-slate-500 focus:outline-none w-72"
+                  className="bg-transparent border-none text-xs focus:outline-none w-72"
+                  style={{ color: 'var(--text-primary)' }}
                 />
               </div>
             </div>
@@ -191,10 +203,13 @@ export default function AuditPage() {
               <TableSkeleton rows={10} />
             ) : filteredItems.length === 0 ? (
               <div className="flex-1 p-12 flex flex-col justify-center items-center text-center">
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 border"
+                  style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)' }}
+                >
                   <FileText className="w-6 h-6 text-slate-500" />
                 </div>
-                <p className="text-slate-300 font-medium">No audit events match your filter</p>
+                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>No audit events match your filter</p>
               </div>
             ) : viewMode === 'table' ? (
               <div className="overflow-x-auto flex-1">
@@ -213,11 +228,11 @@ export default function AuditPage() {
                       const actor = getActorType(log);
                       return (
                         <tr key={log.id}>
-                          <td className="whitespace-nowrap text-slate-400 font-mono text-[11px]">{formatDateTime(log.created_at)}</td>
+                          <td className="whitespace-nowrap font-mono text-[11px]" style={{ color: 'var(--text-muted)' }}>{formatDateTime(log.created_at)}</td>
                           <td>
                             <div className="flex items-center gap-2">
                               {getActorIcon(actor)}
-                              <span className="font-medium text-slate-200">{actor}</span>
+                              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{actor}</span>
                             </div>
                           </td>
                           <td>
@@ -225,10 +240,10 @@ export default function AuditPage() {
                               {log.action}
                             </span>
                           </td>
-                          <td className="text-slate-300">
-                            {log.resource_type || 'system'} {log.resource_id ? <span className="text-violet-300 font-mono text-[11px]">#{log.resource_id.slice(0, 8)}</span> : null}
+                          <td style={{ color: 'var(--text-secondary)' }}>
+                            {log.resource_type || 'system'} {log.resource_id ? <span className="text-violet-600 dark:text-violet-300 font-mono text-[11px]">#{log.resource_id.slice(0, 8)}</span> : null}
                           </td>
-                          <td className="text-slate-400 max-w-[240px] truncate" title={formatDetails(log.details)}>
+                          <td className="max-w-[240px] truncate" style={{ color: 'var(--text-muted)' }} title={formatDetails(log.details)}>
                             {formatDetails(log.details)}
                           </td>
                         </tr>
@@ -239,40 +254,46 @@ export default function AuditPage() {
               </div>
             ) : (
               <div className="flex-1 p-6 relative">
-                <div className="absolute left-10 top-6 bottom-6 w-px bg-white/10" />
+                <div className="absolute left-10 top-6 bottom-6 w-px" style={{ background: 'var(--border-default)' }} />
                 <div className="space-y-6">
                   {filteredItems.map((log) => {
                     const actor = getActorType(log);
                     return (
                       <div key={log.id} className="relative flex items-start gap-6 group">
-                        <div className="w-8 h-8 rounded-full bg-[var(--bg-elevated)] border border-white/20 flex items-center justify-center relative z-10 group-hover:border-violet-500/50 group-hover:shadow-[0_0_10px_rgba(124,58,237,0.3)] transition-all">
+                        <div 
+                          className="w-8 h-8 rounded-full flex items-center justify-center relative z-10 border transition-all group-hover:scale-110 shadow-sm"
+                          style={{ background: 'var(--bg-card)', borderColor: 'var(--border-strong)' }}
+                        >
                           {getActorIcon(actor)}
                         </div>
-                        <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-lg p-4 group-hover:bg-white/[0.04] transition-colors">
+                        <div 
+                          className="flex-1 rounded-xl p-4 transition-all border shadow-sm group-hover:shadow-md"
+                          style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)' }}
+                        >
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-medium text-white text-xs">{actor}</span>
-                              <span className="text-slate-500 text-xs">performed</span>
+                              <span className="font-semibold text-xs" style={{ color: 'var(--text-primary)' }}>{actor}</span>
+                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>performed</span>
                               <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border", getActionColor(log.action))}>
                                 {log.action}
                               </span>
                             </div>
-                            <span className="text-[11px] text-slate-500 font-mono">{formatDateTime(log.created_at)}</span>
+                            <span className="text-[11px] font-mono" style={{ color: 'var(--text-muted)' }}>{formatDateTime(log.created_at)}</span>
                           </div>
                           
                           {log.resource_type && (
-                            <p className="text-xs text-slate-300 mb-2">
-                              Resource: <span className="font-medium text-white">{log.resource_type}</span> 
-                              {log.resource_id && <code className="text-xs text-violet-300 bg-violet-500/10 px-1 py-0.5 rounded ml-1">#{log.resource_id}</code>}
+                            <p className="text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
+                              Resource: <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{log.resource_type}</span> 
+                              {log.resource_id && <code className="text-xs text-violet-700 dark:text-violet-300 bg-violet-500/10 px-1.5 py-0.5 rounded ml-1 font-mono border border-violet-500/20">#{log.resource_id}</code>}
                             </p>
                           )}
 
                           {log.tools_called && log.tools_called.length > 0 && (
                             <div className="flex items-center gap-1.5 my-2 flex-wrap">
-                              <Terminal className="w-3.5 h-3.5 text-violet-400" />
-                              <span className="text-[11px] text-slate-400">Tools Executed:</span>
+                              <Terminal className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+                              <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Tools Executed:</span>
                               {log.tools_called.map((toolName) => (
-                                <span key={toolName} className="text-[10px] bg-violet-500/20 text-violet-300 px-1.5 py-0.5 rounded font-mono">
+                                <span key={toolName} className="text-[10px] bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20 px-1.5 py-0.5 rounded font-mono font-medium">
                                   {toolName}
                                 </span>
                               ))}
@@ -280,7 +301,10 @@ export default function AuditPage() {
                           )}
 
                           {log.details && (
-                            <pre className="text-[11px] text-slate-300 mt-2 p-2.5 rounded bg-black/30 font-mono overflow-x-auto border border-white/5 max-h-40">
+                            <pre 
+                              className="text-[11px] mt-2 p-3 rounded-lg font-mono overflow-x-auto border max-h-40"
+                              style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)', color: 'var(--text-primary)' }}
+                            >
                               {formatDetails(log.details)}
                             </pre>
                           )}
@@ -292,20 +316,25 @@ export default function AuditPage() {
               </div>
             )}
 
-            <div className="p-4 border-t border-white/10 flex items-center justify-between bg-white/5 mt-auto">
-              <p className="text-xs text-slate-500">
+            <div 
+              className="p-4 border-t flex items-center justify-between mt-auto"
+              style={{ borderColor: 'var(--border-default)', background: 'var(--bg-elevated)' }}
+            >
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                 Page {data?.page || 1} of {data?.total_pages || 1}
               </p>
               <div className="flex gap-2">
                 <button
-                  className="p-1.5 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50 transition-colors"
+                  className="p-1.5 rounded disabled:opacity-50 transition-colors border"
+                  style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
                   disabled={page === 1}
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
-                  className="p-1.5 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50 transition-colors"
+                  className="p-1.5 rounded disabled:opacity-50 transition-colors border"
+                  style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
                   disabled={page >= (data?.total_pages || 1)}
                   onClick={() => setPage(p => p + 1)}
                 >

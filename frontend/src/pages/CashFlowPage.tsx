@@ -103,42 +103,49 @@ export default function CashFlowPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex bg-white/5 rounded-lg p-1 border border-white/10">
+          <div 
+            className="flex rounded-lg p-1 border"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)' }}
+          >
             {[7, 14, 30].map(d => (
               <button 
                 key={d}
                 onClick={() => setDays(d)}
                 className={cn(
-                  "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
-                  days === d ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white"
+                  "px-3 py-1.5 rounded-md text-xs font-semibold transition-all",
+                  days === d ? "bg-violet-600 text-white shadow-sm" : "hover:text-violet-600 dark:hover:text-white"
                 )}
+                style={{ color: days === d ? '#ffffff' : 'var(--text-muted)' }}
               >
                 {d}D
               </button>
             ))}
           </div>
           
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-sm font-medium transition-colors">
+          <button 
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all border shadow-sm hover:opacity-80"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
+          >
             <Download className="w-4 h-4" /> <span className="hidden sm:inline">Export</span>
           </button>
         </div>
       </div>
 
       {isLowBalanceAlert && (
-        <div className="animate-fade-in-up delay-50 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-4 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+        <div className="animate-fade-in-up delay-50 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-4 shadow-sm">
           <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <AlertTriangle className="w-5 h-5 text-red-400" />
+            <AlertTriangle className="w-5 h-5 text-red-500" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-bold text-red-400">Low Balance Risk Detected</h3>
-            <p className="text-sm text-red-300/80 mt-1 mb-3 max-w-2xl">
+            <h3 className="text-sm font-bold text-red-500">Low Balance Risk Detected</h3>
+            <p className="text-sm text-red-400 mt-1 mb-3 max-w-2xl">
               Based on the current forecast, your cash balance is projected to fall below the minimum threshold of {formatCurrency(alertThreshold)} within the next {days} days.
             </p>
             <div className="flex items-center gap-3">
-              <button className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <button className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm">
                 View Risk Assessment
               </button>
-              <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-lg text-sm font-medium transition-colors">
+              <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium transition-colors">
                 Adjust Threshold
               </button>
             </div>
@@ -167,12 +174,18 @@ export default function CashFlowPage() {
         />
       </div>
 
-      <Card className="animate-fade-in-up delay-200 p-0 overflow-hidden relative">
+      <Card className="animate-fade-in-up delay-200 p-0 overflow-hidden relative shadow-sm">
         {/* Scenario Tabs */}
-        <div className="px-6 py-4 border-b border-white/10 bg-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div 
+          className="px-6 py-4 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          style={{ borderColor: 'var(--border-default)', background: 'var(--bg-elevated)' }}
+        >
           <div className="flex items-center gap-6">
-            <h3 className="text-base font-semibold text-white">Cash Balance Projection</h3>
-            <div className="flex items-center gap-1 bg-black/20 rounded-lg p-1 border border-white/5">
+            <h3 className="text-base font-semibold" style={{ color: 'var(--text-primary)' }}>Cash Balance Projection</h3>
+            <div 
+              className="flex items-center gap-1 rounded-lg p-1 border"
+              style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)' }}
+            >
               {[
                 { id: 'optimistic', label: 'Optimistic' },
                 { id: 'expected', label: 'Expected' },
@@ -182,11 +195,12 @@ export default function CashFlowPage() {
                   key={s.id}
                   onClick={() => setScenario(s.id as any)}
                   className={cn(
-                    "px-4 py-1.5 rounded-md text-xs font-medium transition-all relative",
+                    "px-4 py-1.5 rounded-md text-xs font-semibold transition-all relative",
                     scenario === s.id 
-                      ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20" 
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-violet-600 text-white shadow-md shadow-violet-600/20" 
+                      : "hover:text-violet-600 dark:hover:text-white"
                   )}
+                  style={{ color: scenario === s.id ? '#ffffff' : 'var(--text-muted)' }}
                 >
                   {s.label}
                 </button>

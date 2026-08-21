@@ -156,16 +156,19 @@ function EvidenceProvenanceCard({ inv }: { inv: InvestigationResponse }) {
   if (!inv.supporting_evidence?.length && !inv.financial_impact?.recoverable_amount) return null;
 
   return (
-    <div className="mb-3 p-4 bg-slate-900/60 border border-violet-500/20 rounded-xl space-y-3">
-      <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+    <div 
+      className="mb-3 p-4 border rounded-xl space-y-3 shadow-sm transition-all"
+      style={{ background: 'var(--bg-card)', borderColor: 'var(--border-default)' }}
+    >
+      <div className="flex items-center justify-between border-b pb-2.5" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-2">
-          <Layers size={14} className="text-violet-400" />
-          <span className="text-xs font-bold text-white uppercase tracking-wider">
+          <Layers size={14} className="text-violet-600 dark:text-violet-400" />
+          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-primary)' }}>
             Deterministic Evidence Provenance
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
             {inv.classification || 'CONFIRMED'} • {inv.confidence_score || 92}% Confidence
           </span>
         </div>
@@ -174,33 +177,45 @@ function EvidenceProvenanceCard({ inv }: { inv: InvestigationResponse }) {
       {/* Metric Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {inv.financial_impact?.revenue_gap != null && (
-          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-slate-400 uppercase block">Revenue Gap</span>
-            <span className="text-xs font-bold text-white">
+          <div 
+            className="p-2.5 rounded-lg border"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
+          >
+            <span className="text-[10px] uppercase block font-semibold" style={{ color: 'var(--text-muted)' }}>Revenue Gap</span>
+            <span className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>
               {formatCurrency(inv.financial_impact.revenue_gap)}
             </span>
           </div>
         )}
         {inv.financial_impact?.unrealized_revenue != null && (
-          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-slate-400 uppercase block">Unrealized Volume</span>
-            <span className="text-xs font-bold text-amber-400">
+          <div 
+            className="p-2.5 rounded-lg border"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
+          >
+            <span className="text-[10px] uppercase block font-semibold" style={{ color: 'var(--text-muted)' }}>Unrealized Volume</span>
+            <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
               {formatCurrency(inv.financial_impact.unrealized_revenue)}
             </span>
           </div>
         )}
         {inv.recovery_opportunity?.eligible_transactions != null && (
-          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-slate-400 uppercase block">Policy Eligible</span>
-            <span className="text-xs font-bold text-violet-300">
+          <div 
+            className="p-2.5 rounded-lg border"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
+          >
+            <span className="text-[10px] uppercase block font-semibold" style={{ color: 'var(--text-muted)' }}>Policy Eligible</span>
+            <span className="text-xs font-bold text-violet-700 dark:text-violet-300">
               {inv.recovery_opportunity.eligible_transactions} txns
             </span>
           </div>
         )}
         {inv.recovery_opportunity?.recoverable_amount != null && (
-          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-slate-400 uppercase block">Recoverable (70%)</span>
-            <span className="text-xs font-bold text-emerald-400">
+          <div 
+            className="p-2.5 rounded-lg border"
+            style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
+          >
+            <span className="text-[10px] uppercase block font-semibold" style={{ color: 'var(--text-muted)' }}>Recoverable (70%)</span>
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
               {formatCurrency(inv.recovery_opportunity.recoverable_amount)}
             </span>
           </div>
@@ -210,22 +225,22 @@ function EvidenceProvenanceCard({ inv }: { inv: InvestigationResponse }) {
       {/* Supporting & Contradictory Evidence */}
       <div className="space-y-2 pt-1">
         {inv.supporting_evidence?.map((item, i) => (
-          <div key={i} className="flex items-start gap-2 text-xs text-slate-300">
-            <Check size={12} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+          <div key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+            <Check size={12} className="text-emerald-500 flex-shrink-0 mt-0.5" />
             <div>
-              <span className="font-semibold text-white">{item.claim}</span>
-              {item.value && <span className="text-slate-400 ml-1">({item.value})</span>}
-              <span className="text-[10px] text-violet-400 ml-1.5 font-mono">[{item.source_tool}]</span>
+              <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{item.claim}</span>
+              {item.value && <span className="ml-1" style={{ color: 'var(--text-muted)' }}>({item.value})</span>}
+              <span className="text-[10px] text-violet-600 dark:text-violet-400 ml-1.5 font-mono">[{item.source_tool}]</span>
             </div>
           </div>
         ))}
         {inv.contradictory_evidence?.map((item, i) => (
-          <div key={i} className="flex items-start gap-2 text-xs text-slate-300">
-            <AlertTriangle size={12} className="text-amber-400 flex-shrink-0 mt-0.5" />
+          <div key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+            <AlertTriangle size={12} className="text-amber-500 flex-shrink-0 mt-0.5" />
             <div>
-              <span className="font-semibold text-slate-300">{item.claim}</span>
-              {item.counter_indicator && <span className="text-slate-400 ml-1">— {item.counter_indicator}</span>}
-              <span className="text-[10px] text-slate-500 ml-1.5 font-mono">[{item.source_tool}]</span>
+              <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{item.claim}</span>
+              {item.counter_indicator && <span className="ml-1" style={{ color: 'var(--text-muted)' }}>— {item.counter_indicator}</span>}
+              <span className="text-[10px] ml-1.5 font-mono" style={{ color: 'var(--text-muted)' }}>[{item.source_tool}]</span>
             </div>
           </div>
         ))}
@@ -765,17 +780,22 @@ export default function CopilotPage() {
                 )}
 
                 {msg.role === 'assistant' && (msg.content.includes('Action') || activeInvestigation?.action_id) && (
-                  <div className="p-3 bg-violet-950/40 border border-violet-500/30 rounded-xl flex items-center justify-between gap-4 mt-2">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck size={16} className="text-violet-400" />
+                  <div 
+                    className="p-3.5 border rounded-xl flex items-center justify-between gap-4 mt-2 shadow-sm transition-all"
+                    style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-default)' }}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0 text-violet-600 dark:text-violet-400">
+                        <ShieldCheck size={18} />
+                      </div>
                       <div>
-                        <div className="text-xs font-semibold text-white">Recovery Action Ready in Action Center</div>
-                        <div className="text-[11px] text-slate-400">Human-in-the-loop authorization required before simulation execution</div>
+                        <div className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>Recovery Action Ready in Action Center</div>
+                        <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Human-in-the-loop authorization required before simulation execution</div>
                       </div>
                     </div>
                     <button
                       onClick={() => navigate('/actions')}
-                      className="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors flex-shrink-0"
+                      className="px-3.5 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md shadow-violet-600/20 hover:scale-[1.02] flex-shrink-0"
                     >
                       Review in Actions <ArrowRight size={12} />
                     </button>

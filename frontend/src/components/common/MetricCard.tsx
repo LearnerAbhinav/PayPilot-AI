@@ -65,10 +65,10 @@ export default function MetricCard({
       
       <div className="flex items-start justify-between gap-3 relative z-10">
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium uppercase tracking-wider text-slate-400 group-hover:text-slate-300 transition-colors">
+          <p className="text-xs font-semibold uppercase tracking-wider transition-colors" style={{ color: 'var(--text-muted)' }}>
             {label}
           </p>
-          <p className="mt-2 text-2xl font-bold tracking-tight text-white group-hover:scale-[1.02] origin-left transition-transform">
+          <p className="mt-2 text-2xl font-bold tracking-tight group-hover:scale-[1.02] origin-left transition-transform" style={{ color: 'var(--text-primary)' }}>
             {value}
           </p>
           
@@ -78,16 +78,16 @@ export default function MetricCard({
                 <span
                   className={cn(
                     'inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded transition-colors',
-                    isPositive && 'bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20',
-                    isNegative && 'bg-red-500/10 text-red-400 group-hover:bg-red-500/20',
-                    !isPositive && !isNegative && 'bg-white/5 text-slate-400 group-hover:bg-white/10'
+                    isPositive && 'bg-emerald-500/10 text-emerald-500 font-bold',
+                    isNegative && 'bg-red-500/10 text-red-500 font-bold',
+                    !isPositive && !isNegative && 'bg-white/5 text-slate-400'
                   )}
                 >
                   {isPositive ? <TrendingUp className="w-3 h-3" /> : isNegative ? <TrendingDown className="w-3 h-3" /> : null}
                   {change > 0 ? '+' : ''}{change.toFixed(1)}%
                 </span>
                 {changeLabel && (
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
                     {changeLabel}
                   </span>
                 )}

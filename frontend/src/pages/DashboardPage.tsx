@@ -212,15 +212,19 @@ export default function DashboardPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex bg-white/5 rounded-lg p-1 border border-white/10 mr-2">
+          <div 
+            className="flex rounded-lg p-1 mr-2"
+            style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)' }}
+          >
             {(['24h', '7d', '30d'] as const).map(p => (
               <button 
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={cn(
-                  "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
-                  period === p ? "bg-violet-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
+                  "px-3 py-1.5 rounded-md text-xs font-semibold transition-all",
+                  period === p ? "bg-violet-600 text-white shadow-sm" : "hover:text-violet-400"
                 )}
+                style={{ color: period === p ? '#ffffff' : 'var(--text-muted)' }}
               >
                 {p}
               </button>
@@ -229,7 +233,8 @@ export default function DashboardPage() {
           
           <button 
             onClick={() => fetchData(true)}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg transition-colors hover:opacity-80"
+            style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', color: 'var(--text-muted)' }}
             title="Refresh data"
           >
             <RefreshCw className={cn("w-4 h-4", refreshing && "animate-spin")} />
@@ -238,20 +243,26 @@ export default function DashboardPage() {
       </div>
 
       {/* Autonomous AI Operations & Monitoring Banner */}
-      <div className="p-4 rounded-xl bg-slate-900/80 border border-violet-500/20 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in-up delay-50 shadow-lg shadow-violet-950/20">
+      <div 
+        className="p-4 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in-up delay-50 shadow-md backdrop-blur-md"
+        style={{
+          background: 'var(--bg-card)',
+          borderColor: 'var(--border-default)',
+        }}
+      >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-violet-600/15 border border-violet-500/30 flex items-center justify-center text-violet-400 flex-shrink-0">
             <Bot size={20} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-white">Autonomous Financial Monitoring</span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Autonomous Financial Monitoring</span>
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 {monitoringStatus?.status || 'OPERATIONAL'}
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
               Continuously scanning 42 financial metrics • {monitoringStatus?.active_anomalies || data.recent_anomalies.length} active anomalies • {monitoringStatus?.pending_actions_count || 0} recovery proposals pending authorization
             </p>
           </div>
@@ -268,9 +279,9 @@ export default function DashboardPage() {
           </button>
           <button
             onClick={() => navigate('/actions')}
-            className="flex-1 md:flex-initial py-2 px-3.5 bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+            className="flex-1 md:flex-initial py-2 px-3.5 btn-ghost rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
           >
-            <Zap size={13} className="text-amber-400" /> Action Center
+            <Zap size={13} className="text-amber-500" /> Action Center
           </button>
         </div>
       </div>
@@ -388,16 +399,16 @@ export default function DashboardPage() {
             
             <div className="w-full space-y-3 px-4">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">Payment Success Rate</span>
-                <span className="font-medium text-slate-200">{successRateNum.toFixed(1)}%</span>
+                <span style={{ color: 'var(--text-muted)' }}>Payment Success Rate</span>
+                <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{successRateNum.toFixed(1)}%</span>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">Unresolved Anomalies</span>
-                <span className="font-medium text-amber-400">{data.recent_anomalies.length}</span>
+                <span style={{ color: 'var(--text-muted)' }}>Unresolved Anomalies</span>
+                <span className="font-semibold text-amber-500">{data.recent_anomalies.length}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">Cash Flow Runway</span>
-                <span className="font-medium capitalize text-emerald-400">
+                <span style={{ color: 'var(--text-muted)' }}>Cash Flow Runway</span>
+                <span className="font-semibold capitalize text-emerald-500">
                   {data.cash_flow_summary.risk_level === 'high' ? 'High Risk' : 'Healthy'}
                 </span>
               </div>
@@ -422,7 +433,7 @@ export default function DashboardPage() {
               <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
                 <Activity className="w-6 h-6 text-emerald-400" />
               </div>
-              <p className="text-sm text-slate-400">All payment systems operational. No active anomalies.</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>All payment systems operational. No active anomalies.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -441,10 +452,10 @@ export default function DashboardPage() {
                       <td>
                         <div className="flex items-center gap-2">
                           <AlertTriangle className={cn("w-4 h-4", anomaly.severity === 'critical' ? 'text-red-400' : 'text-amber-400')} />
-                          <span className="font-medium capitalize text-xs">{anomaly.type.replace('_', ' ')}</span>
+                          <span className="font-medium capitalize text-xs" style={{ color: 'var(--text-primary)' }}>{anomaly.type.replace('_', ' ')}</span>
                         </div>
                       </td>
-                      <td className="capitalize text-xs text-slate-300">{anomaly.metric.replace('_', ' ')}</td>
+                      <td className="capitalize text-xs" style={{ color: 'var(--text-secondary)' }}>{anomaly.metric.replace('_', ' ')}</td>
                       <td>
                         <span className={cn("text-xs font-semibold", anomaly.percentage_change > 0 ? "text-red-400" : "text-amber-400")}>
                           {anomaly.percentage_change > 0 ? `+${anomaly.percentage_change.toFixed(1)}%` : `${anomaly.percentage_change.toFixed(1)}%`}
@@ -491,16 +502,20 @@ export default function DashboardPage() {
             </div>
             <div className="w-1/2 space-y-2.5 w-full">
               {data.payment_methods.slice(0, 5).map((method: any, index: number) => (
-                <div key={method.method} className="flex items-center justify-between p-2 rounded bg-white/5 hover:bg-white/10 transition-colors">
+                <div 
+                  key={method.method} 
+                  className="flex items-center justify-between p-2 rounded transition-colors"
+                  style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)' }}
+                >
                   <div className="flex items-center gap-2">
                     <div
                       className="w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: COLORS[index % COLORS.length] }}
                     />
-                    <span className="text-xs font-medium uppercase text-slate-200">{method.method}</span>
+                    <span className="text-xs font-semibold uppercase" style={{ color: 'var(--text-primary)' }}>{method.method}</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-bold text-white">{method.percentage.toFixed(1)}%</p>
+                    <p className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>{method.percentage.toFixed(1)}%</p>
                   </div>
                 </div>
               ))}
