@@ -1,0 +1,19 @@
+name: 24/7 Keep Alive (Zero Cold Starts)
+
+on:
+  schedule:
+    # Runs every 10 minutes to prevent Render free tier from sleeping
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend Health Endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://paypilot-ai-ytu9.onrender.com/api/health)
+          echo "Render Backend Health Status Code: $response"
+          if [ "$response" -ne 200 ]; then
+            echo "Warning: Received HTTP $response"
+          fi
