@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from pydantic import field_validator, model_validator
 from functools import lru_cache
 
 
@@ -8,6 +9,41 @@ class Settings(BaseSettings):
     JWT_SECRET: str = "change-me-to-a-random-secret-in-production"
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRY_MINUTES: int = 1440
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_async_db_url(cls, v: str) -> str:
+        if not v:
+            return v
+        url = str(v).strip()
+        if url.startswith("postgres://"):
+            url = "postgresql+asyncpg://" + url[len("postgres://"):]
+        elif url.startswith("postgresql://") and not url.startswith("postgresql+asyncpg://"):
+            url = "postgresql+asyncpg://" + url[len("postgresql://"):]
+        # asyncpg requires ssl=require instead of sslmode=require
+        url = url.replace("sslmode=require", "ssl=require")
+        return url
+
+    @field_validator("DATABASE_URL_SYNC", mode="before")
+    @classmethod
+    def assemble_sync_db_url(cls, v: str) -> str:
+        if not v:
+            return v
+        url = str(v).strip()
+        if url.startswith("postgresql+asyncpg://"):
+            url = "postgresql://" + url[len("postgresql+asyncpg://"):]
+        # Sync psycopg2 uses sslmode=require
+        url = url.replace("ssl=require", "sslmode=require")
+        return url
+
+    @model_validator(mode="after")
+    def sync_database_urls(self):
+        # If DATABASE_URL_SYNC is default but DATABASE_URL was custom provided, derive it
+        if self.DATABASE_URL and "localhost" not in self.DATABASE_URL and "localhost" in self.DATABASE_URL_SYNC:
+            sync_url = self.DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+            sync_url = sync_url.replace("ssl=require", "sslmode=require")
+            self.DATABASE_URL_SYNC = sync_url
+        return self
 
     # AI Provider — supports "groq" or "openai"
     LLM_PROVIDER: str = "groq"

@@ -151,7 +151,8 @@ export async function streamInvestigationWithAuth(
   onError: (err: string) => void
 ): Promise<void> {
   const token = localStorage.getItem("paypilot_token");
-  const url = `/api/investigations/${investigationId}/stream`;
+  const baseUrl = import.meta.env.VITE_API_URL || "/api";
+  const url = `${baseUrl}/investigations/${investigationId}/stream`;
 
   let response: Response;
   try {
